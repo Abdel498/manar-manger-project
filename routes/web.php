@@ -6,39 +6,45 @@ use App\Http\Controllers\TaskController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+// الصفحة الرئيسية
+Route::get('/', function () {
+    return view('welcome');
+})->name('home');
 
+// --- روابط الضيوف (فقط لمن لم يسجل دخوله) ---
+Route::middleware(['guest'])->group(function () {
+    // التسجيل
+    Route::get('/register', [SessionsController::class, 'create'])->name('register');
+    Route::post('/register', [SessionsController::class, 'store']);
 
-Route::get('/', [TaskController::class, 'index'])->name('home');
+    // تسجيل الدخول
+    Route::get('/login', [SessionsController::class, 'createLogin'])->name('login');
+    Route::post('/login', [SessionsController::class, 'login']);
+});
 
-Route::get('/register', [SessionsController::class, 'create']);
-Route::post('/register', [SessionsController::class, 'store'])->name('sessions.store');
-Route::get('/login', [SessionsController::class, 'createLogin']);
-Route::post('/login', [SessionsController::class, 'login'])->name('sessions.login');
-
-Route::resources([
-    'task' => TaskController::class,
-]);
-
+// --- روابط الأعضاء (يجب تسجيل الدخول للوصول إليها) ---
 Route::middleware(['auth'])->group(function () {
-    Route::post('/logout', [SessionsController::class, 'destroy']);
-    Route::patch('/task/{task}/completed', [TaskController::class,'completed']);
-    Route::post('/task/{task}/comment', [CommentController::class, 'store']);
-    Route::get('/task/{task}/notify', [TaskController::class, 'notifyUser']);
+    
+    // تسجيل الخروج
+    Route::post('/logout', [SessionsController::class, 'destroy'])->name('logout');
+
+    // إدارة المهام (Resources)
+    Route::resource('task', TaskController::class);
+
+    // عمليات إضافية للمهام
+    Route::patch('/task/{task}/completed', [TaskController::class, 'completed'])->name('task.completed');
+    Route::post('/task/{task}/comment', [CommentController::class, 'store'])->name('task.comment');
+    Route::get('/task/{task}/notify', [TaskController::class, 'notifyUser'])->name('task.notify');
+
+    // لوحة تحكم المستخدم (User Dashboard)
+    Route::get('user/{user}/dashboard', [UserController::class, 'userDashboard'])->name('user.dashboard');
+
+    // --- رابط الملف الشخصي الجديد ---
+    Route::get('/profile', [UserController::class, 'show'])->name('profile.show');
 });
 
+// --- روابط الإدارة (Admin Only) ---
 Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('user/{user}/dashboard', [UserController::class, 'userDashboard'])->name('user.dashboard');  
-    Route::get('user/dashboard/admin', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
+    Route::get('admin/dashboard', [UserController::class, 'adminDashboard'])->name('admin.dashboard');
 });
-
 

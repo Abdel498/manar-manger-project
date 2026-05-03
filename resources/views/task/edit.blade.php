@@ -1,54 +1,86 @@
 <x-layout>
-    <x-section-header sectionName="Updating Task: {{$task->title}}" />
+    <x-section-header sectionName="Créer une tâche" />
+
     <div class="w-full lg:w-1/2 my-6 pr-0 lg:pr-2">
-        
-        <span class="mb-3">
-            <x-content-layout contentName="Created by" contents="{{ $task->getTaskCreatorUser() }}" />
-            <x-content-layout contentName="Assigned to" contents="{{ $task->getAssignedUser() }}" />
-        </span>
+
+        <p class="text-xl pb-6 flex items-center">
+            <i class="fas fa-list mr-3"></i>
+            <a href="{{ route('task.index') }}">
+                Liste des tâches
+            </a>
+        </p>
 
         <div class="leading-loose">
-            <form class="p-10 bg-white rounded shadow-xl mt-2" method="post" action="/task/{{$task->id}}">
+            @auth
+            <form 
+                class="p-10 bg-white rounded shadow-xl" 
+                method="POST" 
+                action="{{ route('task.store') }}"
+            >
                 @csrf
-                @method('PATCH')
-                <x-form.input inputName="title" value="{{$task->title}}"/>
 
-                <div class="mt-2">
-                    <label class=" block text-sm text-gray-600" for="description">Task Details</label>
-                    <textarea class="w-full px-5 py-2 text-gray-700 bg-gray-200 rounded" id="description"
-                        name="description" rows="6" placeholder="Task Details...." required>{{$task->description}}
-                    </textarea>
+                <!-- Titre -->
+                <x-form.input inputName="title" label="Titre de la tâche" />
+
+                <!-- Description -->
+                <div class="mt-4">
+                    <label class="block text-sm text-gray-600">
+                        Détails de la tâche
+                    </label>
+                    <textarea
+                        name="description"
+                        rows="6"
+                        class="w-full px-5 py-2 text-gray-700 bg-gray-200 rounded"
+                        placeholder="Décrivez la tâche en détail..."
+                        required
+                    >{{ old('description') }}</textarea>
+
+                    <x-form.error inputName="description" />
                 </div>
 
-                <x-form.input inputName="due" type="date" value="{{$task->due}}"/>
-                    
-                <div class="mt-2">
-                    <label class="block text-sm text-gray-600" for="user">Assign new user</label>
-                    <select name="assigneduser_id" id="assigneduser_id">
-                        @if ($users->count())
-                            @foreach ($users as $user)
-                                @if ($user->id === $task->assigneduser_id)
-                                <option value="{{ $user->id }}" selected>
-                                    {{ $user->name }}
-                                </option>
-                                @endif
-                                <option value="{{ $user->id }}">
-                                    {{ $user->name }}
-                                </option>
-                            @endforeach
-                        @endif
+                <!-- Date limite -->
+                <x-form.input
+                    inputName="due"
+                    type="date"
+                    label="Date limite"
+                    :min="now()->toDateString()"
+                />
+
+                <!-- Attribution -->
+                <div class="mt-4">
+                    <label class="block text-sm text-gray-600">
+                        Assigner la tâche à
+                    </label>
+
+                    <select
+                        name="assigneduser_id"
+                        class="w-full px-4 py-2 bg-gray-200 rounded"
+                    >
+                        @foreach ($users as $user)
+                            <option
+                                value="{{ $user->id }}"
+                                @selected(old('assigneduser_id') == $user->id)
+                            >
+                                {{ $user->name }}
+                            </option>
+                        @endforeach
                     </select>
+
+                    <x-form.error inputName="assigneduser_id" />
                 </div>
-                @auth
-                <div class="mt-6">
-                    <button class="px-4 py-1 text-white font-light tracking-wider bg-gray-900 rounded"
-                        type="Update">Update</button>
-                </div>
-                @else
-                <p class="font-bold "><a href="/login" class="underline">Sign in</a> to update this
-                    Task</p>
-                @endauth
+
+                <!-- Bouton -->
+                <x-form.button buttonName="Créer la tâche" />
+
             </form>
+            @else
+                <p class="font-bold text-red-600">
+                    <a href="/login" class="underline">
+                        Connectez-vous
+                    </a>
+                    pour créer une tâche.
+                </p>
+            @endauth
         </div>
     </div>
 </x-layout>

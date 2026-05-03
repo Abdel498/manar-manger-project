@@ -29,5 +29,12 @@ class UserController extends Controller
                             ->paginate(10)
         ]);
     }
+  
+    public function show()
+    {
+        $user = auth()->user();
+        // لاحظ المسار: user.profile تعني مجلد user ثم ملف profile
+        return view('user.profile', compact('user'));
+    }
     
 }

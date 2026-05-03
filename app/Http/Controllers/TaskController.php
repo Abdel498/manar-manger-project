@@ -46,15 +46,26 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        $attributes = $this->validateTask($request);
-        $attributes['taskcreator_id'] =  Auth::user()->id;
-        $attributes['completed'] = 0;
-        $attributes['slug'] = Str::slug($request->title);
-        $task = Task::create($attributes);
-
-        $this->notifyUser($task->assigneduser_id);
-
-        return redirect('/')->with('success', 'Task updated and assigned user notified by email');
+        // 1. التحقق من البيانات المدخلة
+        $attributes = $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required',
+            'assigned_to' => 'required|exists:users,id',
+            'due_date' => 'required|date',
+        ]);
+    
+        // 2. إنشاء المهمة وربطها بالمستخدم الحالي (المُنشئ)
+        $task = new \App\Models\Task();
+        $task->title = $attributes['title'];
+        $task->description = $attributes['description'];
+        $task->user_id = auth()->id(); // الشخص الذي أنشأ المهمة
+        $task->assigned_to = $attributes['assigned_to']; // الشخص المسؤول
+        $task->due_date = $attributes['due_date'];
+        $task->status = 'pending'; // حالة افتراضية
+        $task->save();
+    
+        // 3. التوجيه المباشر إلى قائمة المهام مع رسالة نجاح
+        return redirect()->route('task.index')->with('success', 'تمت إضافة المهمة بنجاح إلى القائمة!');
     }
 
     /**

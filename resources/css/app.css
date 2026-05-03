@@ -1,0 +1,117 @@
+/* ===== GENERAL ===== */
+body {
+    background-color: #f4f6f8;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ===== TABLE PANEL ===== */
+.container {
+    max-width: 100%;
+}
+
+/* ===== TABLE ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* ===== TABLE HEAD ===== */
+thead {
+    background-color: #1f2937;
+}
+
+thead th {
+    color: #ffffff;
+    padding: 14px;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ===== TABLE BODY ===== */
+tbody td {
+    padding: 12px;
+    font-size: 14px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+tbody tr:hover {
+    background-color: #f1f5f9;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* ===== LINKS ===== */
+a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ===== BUTTONS ===== */
+button,
+.btn {
+    background-color: #2563eb;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    border: none;
+}
+
+button:hover,
+.btn:hover {
+    background-color: #1e40af;
+}
+
+/* ===== STATUS COLORS ===== */
+.status-finished {
+    color: green;
+    font-weight: bold;
+}
+
+.status-pending {
+    color: orange;
+    font-weight: bold;
+}
+
+.status-late {
+    color: red;
+    font-weight: bold;
+}
+
+/* ===== ACTION LINKS ===== */
+.action-edit {
+    color: #2563eb;
+    margin-right: 10px;
+    font-weight: 500;
+}
+
+.action-delete {
+    color: #dc2626;
+    font-weight: 500;
+}
+
+/* ===== SEARCH FORMS ===== */
+form {
+    margin-right: 20px;
+}
+
+input {
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+}
+
+input:focus {
+    outline: none;
+    border-color: #2563eb;
+}
+``
