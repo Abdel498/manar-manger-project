@@ -1,34 +1,21 @@
-<h1>Task Manager built on Laravel </h1>
-<ul>
-    <li>Users can assign task to other users</li>
-    <li>CRUD resources on Task</li>
-<li>Admin Dashboard</li>
-<li>Email notification to users after task creation and completion</li>
-    <li>Admin dashboard to summarize actions</li>
- </ul>
- 
-<div class="snippet-clipboard-content position-relative overflow-auto" data-snippet-clipboard-copy-content="git clone https://github.com/wasilolly/Task-Manager-with-laravel-framework.git 
-composer install
-cp .env.example .env
-">
-<pre><code>git clone https://github.com/wasilolly/Task-Manager-with-laravel-framework.git
-composer install
-cp .env.example .env
-</code></pre>
-</div>
-<p>Then create the necessary database.</p>
-<div class="snippet-clipboard-content position-relative overflow-auto" data-snippet-clipboard-copy-content="php artisan db
-create database blog
-">
-<pre>
-<code>php artisan db
-create database taskmanagement
-</code>
-</pre>
-</div>
-<p>And run the initial migrations and seeders.</p>
-<div class="snippet-clipboard-content position-relative overflow-auto" data-snippet-clipboard-copy-content="php artisan migrate --seed
-">
-<pre><code>php artisan migrate --seed
-</code></pre>
-</div>
+# Système de Gestion de Tâches (Task Manager) - Laravel
+
+Ce projet est une application web complète de gestion de tâches développée avec le framework **Laravel**. Il a été conçu pour faciliter l'organisation et la distribution des tâches entre les utilisateurs.
+
+## Caractéristiques Principales (Features)
+* **Gestion des Tâches (CRUD) :** Ajouter, afficher, modifier et supprimer des tâches.
+* **Système d'Authentification :** Connexion sécurisée et gestion des profils utilisateurs.
+* **Tableau de Bord Administrateur (Admin Dashboard) :** Supervision complète de l'activité du système.
+* **Support Multilingue :** Support complet de l'arabe et du français/anglais.
+
+## Prérequis (Requirements)
+* PHP >= 8.1
+* Composer
+* Base de données : MySQL ou SQLite
+
+## Installation
+
+1. **Cloner le projet :**
+   ```bash
+   git clone [https://github.com/Abdel498/manar-manger-project.git](https://github.com/Abdel498/manar-manger-project.git)
+   cd manar-manger-project
